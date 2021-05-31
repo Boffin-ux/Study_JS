@@ -16,7 +16,7 @@ console.log('Цель заработать ' + mission + ' рублей');
 const arrExpenses = addExpenses.toLowerCase().split(', ');
 console.log('addExpenses: ', arrExpenses);
 
-const budgetDay = money / 30;
+let budgetDay = money / 30;
 console.log('budgetDay: ', budgetDay);
 
 money = prompt('Ваш месячный доход?');
@@ -29,3 +29,9 @@ const expensesTwo = prompt('2. Введите обязательную стат�
 
 const amountOne = prompt('1. Во сколько это обойдется?');
 const amountTwo = prompt('2. Во сколько это обойдется?');
+
+const budgetMonth = money - expensesOne - expensesTwo;
+console.log('Цель будет достигнута за ' + Math.ceil(mission / budgetMonth) + ' месяцев');
+
+budgetDay = budgetMonth / 30;
+console.log('Бюджет на день: ', Math.floor(budgetDay));
