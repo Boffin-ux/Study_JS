@@ -1,9 +1,11 @@
-const money = 45000;
-const income = 'фриланс';
-const addExpenses = 'Интернет, Такси, Коммуналка';
-const deposit = true;
-const mission = 500000;
-const period = 6;
+'use strict';
+
+let money = 45000;
+let income = 'фриланс';
+let addExpenses = 'Интернет, Такси, Коммуналка';
+let deposit = true;
+let mission = 500000;
+let period = 6;
 
 console.log('money: ', typeof money);
 console.log('income: ', typeof income);
@@ -16,3 +18,14 @@ console.log('addExpenses: ', arrExpenses);
 
 const budgetDay = money / 30;
 console.log('budgetDay: ', budgetDay);
+
+money = prompt('Ваш месячный доход?');
+addExpenses = prompt(
+   'Перечислите возможные расходы за рассчитываемый период через запятую');
+deposit = confirm('Есть ли у вас депозит в банке?');
+
+const expensesOne = prompt('1. Введите обязательную статью расходов?');
+const expensesTwo = prompt('2. Введите обязательную статью расходов?');
+
+const amountOne = prompt('1. Во сколько это обойдется?');
+const amountTwo = prompt('2. Во сколько это обойдется?');
