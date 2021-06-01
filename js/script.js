@@ -14,18 +14,13 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-console.log(`Период равен ${period} месяцев`);
-console.log(`Цель заработать ${mission} рублей`);
-
-const arrExpenses = addExpenses.toLowerCase().split(', ');
-console.log('addExpenses: ', arrExpenses);
-
 let budgetDay = money / 30;
-console.log('budgetDay: ', budgetDay);
 
 addExpenses = prompt(
    'Перечислите возможные расходы за рассчитываемый период через запятую');
 
+const arrExpenses = addExpenses.toLowerCase().split(', ');
+console.log('addExpenses: ', arrExpenses);
 deposit = confirm('Есть ли у вас депозит в банке?');
 
 const expensesOne = prompt('1. Введите обязательную статью расходов', 'Бензин');
