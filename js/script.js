@@ -2,7 +2,9 @@
 
 let money = +prompt('Ваш месячный доход?', 45000), //Доход за месяц
    income = 'фриланс', //Доп.доход
-   addExpenses = 'Интернет, Такси, Коммуналка', //Дополнительные расходы
+   addExpenses = prompt(
+      'Перечислите возможные расходы за рассчитываемый период через запятую',
+      'Интернет, Такси, Коммуналка'), //Дополнительные расходы
    deposit = true,
    mission = 500000, //Желаемая сумма накоплений
    period = 6;
@@ -13,11 +15,6 @@ const showTypeOf = data => {
 showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
-
-let budgetDay = money / 30;
-
-addExpenses = prompt(
-   'Перечислите возможные расходы за рассчитываемый период через запятую');
 
 const arrExpenses = addExpenses.toLowerCase().split(', ');
 console.log('addExpenses: ', arrExpenses);
@@ -31,7 +28,11 @@ const amountTwo = +prompt('2. Во сколько это обойдется?', 5
 
 
 const getExpensesMonth = () => {
-   return amountOne + amountTwo;
+   if (typeof amountOne === 'number' && typeof amountTwo === 'number') {
+      return amountOne + amountTwo;
+   } else {
+      return ('Введите число');
+   }
 };
 console.log('Расходы за месяц: ', getExpensesMonth());
 
@@ -45,7 +46,7 @@ const getTargetMonth = () => {
 };
 console.log(`Цель будет достигнута за ${Math.ceil(getTargetMonth())} месяцев`);
 
-budgetDay = Math.floor(accumulatedMonth / 30);
+const budgetDay = Math.floor(accumulatedMonth / 30);
 console.log('Бюджет на день: ', budgetDay);
 
 const getStatusIncome = () => {
@@ -56,7 +57,7 @@ const getStatusIncome = () => {
    } else if (budgetDay >= 0 && budgetDay < 600) {
       return ('К сожалению у вас уровень дохода ниже среднего');
    } else {
-      return ('Что то пошло не так');
+      return ('Что-то пошло не так');
    }
 };
 console.log(getStatusIncome());
