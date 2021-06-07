@@ -1,15 +1,15 @@
 'use strict';
 const startBtn = document.getElementById('start'),
-   incomeAdd = document.getElementsByTagName('btn_plus')[0],
-   expensesAdd = document.getElementsByTagName('btn_plus')[1],
+   incomeAdd = document.getElementsByTagName('button')[0],
+   expensesAdd = document.getElementsByTagName('button')[1],
    depositCheck = document.querySelector('#deposit-check'),
    additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
-   budgetDayValue = document.getElementsByClassName('budget_day-value'),
-   expensesMonthValue = document.getElementsByClassName('expenses_month-value'),
-   additionalIncomeValue = document.getElementsByClassName('additional_income-value'),
-   additionalExpensesValue = document.getElementsByClassName('additional_expenses-value'),
-   incomePeriodValue = document.getElementsByClassName('income_period-value'),
-   targetMonthValue = document.getElementsByClassName('target_month-value'),
+   budgetDayValue = document.getElementsByClassName('budget_day-value')[0],
+   expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0],
+   additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0],
+   additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0],
+   incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
+   targetMonthValue = document.getElementsByClassName('target_month-value')[0],
    salaryAmount = document.querySelector('.salary-amount'),
    incomeTitle = document.querySelector('.income-title'),
    incomeAmount = document.querySelector('.income-amount'),
@@ -17,7 +17,15 @@ const startBtn = document.getElementById('start'),
    expensesAmount = document.querySelector('.expenses-amount'),
    additionalExpensesItem = document.querySelector('.additional_expenses-item'),
    targetAmount = document.querySelector('.target-amount'),
+
    periodSelect = document.querySelector('.period-select');
+
+console.log('targetAmount: ', budgetDayValue);
+console.log('expensesMonthValue: ', expensesMonthValue);
+console.log('additionalIncomeValue: ', additionalIncomeValue);
+console.log('additionalExpensesValue: ', additionalExpensesValue);
+console.log('incomePeriodValue: ', incomePeriodValue);
+console.log('targetMonthValue: ', targetMonthValue);
 
 let isNumber = n => {
    return !isNaN(parseFloat(n)) && isFinite(n);
