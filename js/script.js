@@ -20,13 +20,10 @@ const startBtn = document.getElementById('start'),
 
    periodSelect = document.querySelector('.period-select');
 
-console.log('targetAmount: ', budgetDayValue);
-console.log('expensesMonthValue: ', expensesMonthValue);
-console.log('additionalIncomeValue: ', additionalIncomeValue);
-console.log('additionalExpensesValue: ', additionalExpensesValue);
-console.log('incomePeriodValue: ', incomePeriodValue);
-console.log('targetMonthValue: ', targetMonthValue);
 
+periodSelect.addEventListener('click', () => {
+
+});
 let isNumber = n => {
    return !isNaN(parseFloat(n)) && isFinite(n);
 };
