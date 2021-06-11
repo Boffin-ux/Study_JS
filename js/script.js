@@ -62,6 +62,10 @@ let appData = {
    periodAmount: 0,
    allInputs: [],
    start: function () {
+      if (salaryAmount.value === '') {
+      startBtn.setAttribute('disabled', true);
+      return;
+   }
       this.budget = +salaryAmount.value;
       this.getExpenses();
       this.getIncome();
@@ -254,7 +258,6 @@ let appData = {
    },
 };
 
-startBtn.disabled = true;
 let startBind = appData.start.bind(appData);
 let resetBind = appData.reset.bind(appData);
 
