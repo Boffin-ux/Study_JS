@@ -24,6 +24,7 @@ let startBtn = document.getElementById('start'),
    targetAmount = document.querySelector('.target-amount'),
    periodSelect = document.querySelector('.period-select'),
    periodAmount = document.querySelector('.period-amount'),
+   checkBoxDeposit = document.querySelector('#deposit-check'),
    incomeItems = document.querySelectorAll('.income-items');
 
 let checkNum = amount => {
@@ -202,13 +203,35 @@ let appData = {
       });
    },
    reset: function () {
+      for (let i = 1; i < incomeItems.length; i++) {
+         incomeItems[i].parentNode.removeChild(incomeItems[i]);
+         incomeAdd.style.display = 'block';
+      }
+      for (let i = 1; i < expensesItems.length; i++) {
+         expensesItems[i].parentNode.removeChild(expensesItems[i]);
+         expensesAdd.style.display = 'block';
+      }
       this.budget = 0;
+      this.budgetDay = 0;
+      this.budgetMonth = 0;
+      this.income = {};
+      this.incomeMonth = 0;
+      this.addIncome = [];
+      this.expenses = {};
+      this.expensesMonth = 0;
+      this.addExpenses = [];
+      this.deposit = false;
+      this.percentDeposit = 0;
+      this.moneyDeposit = 0;
+      this.periodAmount = 0;
+
       this.getAllInputs();
       this.resetInput();
       this.unBlockInputs();
       this.removePeriodAmount();
       startBtn.style.display = 'block';
       cancelBtn.style.display = 'none';
+      checkBoxDeposit.checked = false;
 
    },
    resetInput: function () {
