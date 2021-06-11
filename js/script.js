@@ -233,6 +233,8 @@ let appData = {
       this.moneyDeposit = 0;
       this.periodAmount = 0;
 
+      this.getAllInputs();
+      this.resetInput();
       this.unBlockInputs();
       this.removePeriodAmount();
       startBtn.style.display = 'block';
