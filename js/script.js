@@ -27,7 +27,23 @@ let startBtn = document.getElementById('start'),
    checkBoxDeposit = document.querySelector('#deposit-check'),
    incomeItems = document.querySelectorAll('.income-items');
 
+let checkNum = amount => {
+   amount.addEventListener('input', () => {
+      amount.value = amount.value.replace(/[^0-9]/g, '');
+   });
+};
+let checkletter = titleletter => {
+   titleletter.addEventListener('input', () => {
+      titleletter.value = titleletter.value.replace(/[^а-яА-ЯёЁ .,]/g, '');
+   });
+};
 
+let isNumber = n => {
+   return !isNaN(parseFloat(n)) && isFinite(n);
+};
+let isString = n => {
+   return isNaN(n) && typeof n === 'string';
+};
 const AppData = function () {
    this.budget = 0;
    this.budgetDay = 0;
@@ -207,14 +223,18 @@ AppData.prototype.reset = function () {
    this.income = {};
    this.incomeMonth = 0;
    this.addIncome = [];
+   this.addExpenses = [];
    this.expenses = {};
    this.expensesMonth = 0;
-   this.addExpenses = [];
    this.deposit = false;
    this.percentDeposit = 0;
    this.moneyDeposit = 0;
    this.periodAmount = 0;
 
+   const allInputs = document.querySelectorAll('input');
+   allInputs.forEach(function (item) {
+      item.value = '';
+   });
    const allDataInputs = document.querySelectorAll('.data input[type = text]');
    allDataInputs.forEach(function (item) {
       item.removeAttribute('disabled');
@@ -229,40 +249,24 @@ AppData.prototype.reset = function () {
       item.value = '';
    });
    salaryAmount.value = '';
+   incomeItems = document.querySelectorAll('.income-items');
    for (let i = 1; i < incomeItems.length; i++) {
       incomeItems[i].parentNode.removeChild(incomeItems[i]);
       incomeAdd.style.display = 'block';
    }
+   expensesItems = document.querySelectorAll('.expenses-items');
    for (let i = 1; i < expensesItems.length; i++) {
       expensesItems[i].parentNode.removeChild(expensesItems[i]);
       expensesAdd.style.display = 'block';
    }
 
+
    startBtn.style.display = 'block';
    cancelBtn.style.display = 'none';
    checkBoxDeposit.checked = false;
-   this.eventsListeners();
 };
 
 AppData.prototype.eventsListeners = function () {
-   let checkNum = amount => {
-      amount.addEventListener('input', () => {
-         amount.value = amount.value.replace(/[^0-9]/g, '');
-      });
-   };
-   let checkletter = titleletter => {
-      titleletter.addEventListener('input', () => {
-         titleletter.value = titleletter.value.replace(/[^а-яА-ЯёЁ .,]/g, '');
-      });
-   };
-
-   let isNumber = n => {
-      return !isNaN(parseFloat(n)) && isFinite(n);
-   };
-   let isString = n => {
-      return isNaN(n) && typeof n === 'string';
-   };
-
    const _this = this;
    let startBind = _this.start.bind(_this);
    let resetBind = _this.reset.bind(_this);
