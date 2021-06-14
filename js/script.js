@@ -81,8 +81,6 @@ class AppData {
       this.getExpInc();
       this.getExpensesMonth();
       this.getAddExpInc();
-      // this.getAddExpenses();
-      // this.getAddIncome();
       this.getBudget();
       this.showResult();
       startBtn.style.display = 'none';
@@ -111,8 +109,11 @@ class AppData {
       checkletter(elemIncome);
       checkNum(elemAmount);
       elem[0].parentNode.insertBefore(cloneItems, btnAdd);
-      elem = document.querySelectorAll(`.${startStr}-items`);
-
+      if (startStr === 'income') {
+         incomeItems = document.querySelectorAll('.income-items');
+      } else {
+         expensesItems = document.querySelectorAll('.income-items');
+      }
       if (elem.length === 3) {
          btnAdd.style.display = 'none';
       }
@@ -128,6 +129,7 @@ class AppData {
       };
 
       incomeItems.forEach(count);
+      console.log('incomeItems: ', incomeItems);
       expensesItems.forEach(count);
 
       for (let key in this.income) {
@@ -153,7 +155,6 @@ class AppData {
       addExpenses.forEach(count);
       additionalIncomeItem.forEach(count);
    }
-
    getExpensesMonth() {
       for (let key in this.expenses) {
          this.expensesMonth += +this.expenses[key];
