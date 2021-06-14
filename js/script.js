@@ -109,9 +109,10 @@ class AppData {
       checkletter(elemIncome);
       checkNum(elemAmount);
       elem[0].parentNode.insertBefore(cloneItems, btnAdd);
-      if (startStr === 'income') {
+
+      if (elem === 'incomeItems') {
          incomeItems = document.querySelectorAll('.income-items');
-      } else {
+      } else if (elem === 'expensesItems') {
          expensesItems = document.querySelectorAll('.income-items');
       }
       if (elem.length === 3) {
@@ -129,7 +130,6 @@ class AppData {
       };
 
       incomeItems.forEach(count);
-      console.log('incomeItems: ', incomeItems);
       expensesItems.forEach(count);
 
       for (let key in this.income) {
