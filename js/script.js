@@ -109,11 +109,12 @@ class AppData {
       checkletter(elemIncome);
       checkNum(elemAmount);
       elem[0].parentNode.insertBefore(cloneItems, btnAdd);
+      elem = document.querySelectorAll(`.${startStr}-items`);
 
-      if (elem === 'incomeItems') {
-         incomeItems = document.querySelectorAll('.income-items');
-      } else if (elem === 'expensesItems') {
-         expensesItems = document.querySelectorAll('.income-items');
+      if (btnAdd === incomeAdd) {
+         incomeItems = elem;
+      } else if (btnAdd === expensesAdd) {
+         expensesItems = elem;
       }
       if (elem.length === 3) {
          btnAdd.style.display = 'none';
