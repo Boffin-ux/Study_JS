@@ -292,6 +292,7 @@ class AppData {
          checkBoxDeposit.removeAttribute('disabled');
          depositBank.style.display = 'none';
          depositAmount.style.display = 'none';
+         depositBank.value = '';
       }
 
       checkBoxDeposit.checked = false;
