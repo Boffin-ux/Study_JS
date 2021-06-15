@@ -23,7 +23,10 @@ const startBtn = document.getElementById('start'),
    targetAmount = document.querySelector('.target-amount'),
    periodSelect = document.querySelector('.period-select'),
    periodAmount = document.querySelector('.period-amount'),
-   checkBoxDeposit = document.querySelector('#deposit-check');
+   checkBoxDeposit = document.querySelector('#deposit-check'),
+   depositBank = document.querySelector('.deposit-bank'),
+   depositAmount = document.querySelector('.deposit-amount'),
+   depositPercent = document.querySelector('.deposit-percent');
 
 let expensesItems = document.querySelectorAll('.expenses-items'),
    incomeItems = document.querySelectorAll('.income-items');
@@ -81,6 +84,7 @@ class AppData {
       this.getExpInc();
       this.getExpensesMonth();
       this.getAddExpInc();
+      this.getInfoDeposit();
       this.getBudget();
       this.showResult();
       startBtn.style.display = 'none';
@@ -162,7 +166,8 @@ class AppData {
       }
    }
    getBudget() {
-      this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+      const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+      this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
       this.budgetDay = Math.floor(this.budgetMonth / 30);
    }
    getTargetMonth() {
@@ -180,14 +185,52 @@ class AppData {
       }
    }
    getInfoDeposit() {
-      this.deposit = confirm('Есть ли у вас депозит в банке?');
       if (this.deposit) {
-         do {
-            this.percentDeposit = prompt('Какой годовой процент', '10');
-         } while (!isNumber(this.percentDeposit));
-         do {
-            this.mission = prompt('Какая сумма заложена?', 10000);
-         } while (!isNumber(this.mission));
+         if (depositAmount.value === '') {
+            depositAmount.value = 0;
+         }
+         this.percentDeposit = depositPercent.value;
+         this.moneyDeposit = depositAmount.value;
+         depositBank.setAttribute('disabled', true);
+         checkBoxDeposit.setAttribute('disabled', true);
+      }
+   }
+   getPercent() {
+      const getDepositPercent = +depositPercent.value;
+      console.log(getDepositPercent <= 100);
+      if (isNumber(getDepositPercent) && (getDepositPercent >= 0 && getDepositPercent <= 100)) {
+         startBtn.removeAttribute('disabled');
+      } else {
+         alert('Введите корректное значение в поле проценты');
+         startBtn.setAttribute('disabled', true);
+      }
+   }
+   changePercent() {
+      const valueSelect = this.value;
+      if (valueSelect === 'other') {
+         depositPercent.style.display = 'inline-block';
+         this.percentDeposit = depositPercent.value;
+         depositPercent.addEventListener('change', appData.getPercent);
+      } else {
+         depositPercent.value = valueSelect;
+         depositPercent.style.display = 'none';
+         depositPercent.removeEventListener('change', appData.getPercent);
+      }
+   }
+   depositHandler() {
+      if (checkBoxDeposit.checked) {
+         depositBank.style.display = 'inline-block';
+         depositAmount.style.display = 'inline-block';
+         this.deposit = true;
+         checkNum(depositAmount);
+         depositBank.addEventListener('change', this.changePercent);
+      } else {
+         depositBank.style.display = 'none';
+         depositAmount.style.display = 'none';
+         depositBank.value = '';
+         depositAmount.value = '';
+         this.deposit = false;
+         depositBank.removeEventListener('change', this.changePercent);
       }
    }
    calcPeriod() {
@@ -211,7 +254,6 @@ class AppData {
       this.percentDeposit = 0;
       this.moneyDeposit = 0;
       this.periodAmount = 0;
-
       const allInputs = document.querySelectorAll('input');
       allInputs.forEach(function (item) {
          item.value = '';
@@ -244,6 +286,14 @@ class AppData {
 
       startBtn.style.display = 'block';
       cancelBtn.style.display = 'none';
+
+      if (checkBoxDeposit.checked) {
+         depositBank.removeAttribute('disabled');
+         checkBoxDeposit.removeAttribute('disabled');
+         depositBank.style.display = 'none';
+         depositAmount.style.display = 'none';
+      }
+
       checkBoxDeposit.checked = false;
    }
    eventsListeners() {
@@ -276,12 +326,13 @@ class AppData {
       additionalIncomeItem.forEach(function (item) {
          checkletter(item);
       });
+
+      checkBoxDeposit.addEventListener('change', this.depositHandler.bind(this));
    }
 }
 
 const appData = new AppData();
 appData.eventsListeners();
-
 
 // (appData.getTargetMonth() > 0) ?
 //    console.log(`Цель будет достигнута за ${Math.ceil(appData.getTargetMonth())} месяцев`) :
