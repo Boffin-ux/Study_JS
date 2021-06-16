@@ -197,12 +197,9 @@ class AppData {
    }
    getPercent() {
       const getDepositPercent = +depositPercent.value;
-      console.log(getDepositPercent <= 100);
-      if (isNumber(getDepositPercent) && (getDepositPercent >= 0 && getDepositPercent <= 100)) {
-         startBtn.removeAttribute('disabled');
-      } else {
+      if (!isNumber(getDepositPercent) || (getDepositPercent < 0 || getDepositPercent > 100)) {
          alert('Введите корректное значение в поле проценты');
-         startBtn.setAttribute('disabled', true);
+         depositPercent.value = 0;
       }
    }
    changePercent() {
@@ -290,6 +287,7 @@ class AppData {
       if (checkBoxDeposit.checked) {
          depositBank.removeAttribute('disabled');
          checkBoxDeposit.removeAttribute('disabled');
+         depositPercent.style.display = 'none';
          depositBank.style.display = 'none';
          depositAmount.style.display = 'none';
          depositBank.value = '';
