@@ -78,8 +78,10 @@ class AppData {
       dataInputs.forEach(function (item) {
          item.setAttribute('disabled', true);
       });
+      periodSelect.setAttribute('disabled', true);
       incomeAdd.setAttribute('disabled', true);
       expensesAdd.setAttribute('disabled', true);
+      checkBoxDeposit.setAttribute('disabled', true);
       this.budget = +salaryAmount.value;
       this.getExpInc();
       this.getExpensesMonth();
@@ -87,6 +89,8 @@ class AppData {
       this.getInfoDeposit();
       this.getBudget();
       this.showResult();
+      this.addCookie();
+      this.addLocalStorage();
       startBtn.style.display = 'none';
       cancelBtn.style.display = 'block';
    }
@@ -264,6 +268,7 @@ class AppData {
       });
       incomeAdd.removeAttribute('disabled');
       expensesAdd.removeAttribute('disabled');
+      periodSelect.removeAttribute('disabled');
       const allResultInputs = document.querySelectorAll('.result input[type = text]');
       allResultInputs.forEach(function (item) {
          item.value = '';
@@ -292,10 +297,15 @@ class AppData {
          depositAmount.style.display = 'none';
          depositBank.value = '';
       }
-
+      checkBoxDeposit.removeAttribute('disabled');
       checkBoxDeposit.checked = false;
+      this.deleteLocalStorage();
+      this.deleteCookies();
    }
    eventsListeners() {
+      if (localStorage.data) {
+         this.showResultLocalStorage();
+      }
       const _this = this;
       const startBind = _this.start.bind(_this);
       const resetBind = _this.reset.bind(_this);
@@ -312,6 +322,7 @@ class AppData {
       salaryAmount.addEventListener('input', function () {
          checkNum(salaryAmount);
          if (salaryAmount.value) {
+            startBtn.removeAttribute('disabled');
             startBtn.addEventListener('click', startBind);
          }
       });
@@ -327,6 +338,137 @@ class AppData {
       });
 
       checkBoxDeposit.addEventListener('change', this.depositHandler.bind(this));
+   }
+   setCookie(key, value, year, month, day, path, domain, secure) {
+      let cookieStr = `${encodeURI(key)}=${encodeURI(value)}`;
+      if (year) {
+         const expires = new Date(year, month - 1, day);
+         cookieStr += `; expires=${expires.toGMTString()}`;
+      }
+      cookieStr += path ? `; path=${encodeURI(path)}` : '';
+      cookieStr += domain ? `; domain=${encodeURI(domain)}` : '';
+      cookieStr += secure ? '; secure' : '';
+
+      document.cookie = cookieStr;
+   }
+   addCookie() {
+      this.setCookie('budgetMonth', budgetMonthValue.value);
+      this.setCookie('budgetDay', budgetDayValue.value);
+      this.setCookie('expensesMonth', expensesMonthValue.value);
+      this.setCookie('additionalIncomeValue', additionalIncomeValue.value);
+      this.setCookie('additionalExpensesValue', additionalExpensesValue.value);
+      this.setCookie('incomePeriodValue', incomePeriodValue.value);
+      this.setCookie('targetMonthValue', targetMonthValue.value);
+      this.setCookie('isLoad', true);
+   }
+   deleteCookies() {
+      let cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+         let cookie = cookies[i];
+         let eqPos = cookie.indexOf('=');
+         let name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+         document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      }
+   }
+   addLocalStorage() {
+      const data = [{
+         'budgetMonth': budgetMonthValue.value,
+         'budgetDay': budgetDayValue.value,
+         'expensesMonth': expensesMonthValue.value,
+         'additionalIncomeValue': additionalIncomeValue.value,
+         'additionalExpensesValue': additionalExpensesValue.value,
+         'incomePeriodValue': incomePeriodValue.value,
+         'targetMonthValue': targetMonthValue.value
+      }];
+      localStorage.data = JSON.stringify(data);
+   }
+   showResultLocalStorage() {
+      if (this.checklocalStorage() === true) {
+         startBtn.style.display = 'none';
+         cancelBtn.style.display = 'block';
+
+         startBtn.setAttribute('disabled', true);
+         const dataInputs = document.querySelectorAll('.data input[type = text]');
+         dataInputs.forEach(function (item) {
+            item.setAttribute('disabled', true);
+         });
+         periodSelect.setAttribute('disabled', true);
+         incomeAdd.setAttribute('disabled', true);
+         expensesAdd.setAttribute('disabled', true);
+         checkBoxDeposit.setAttribute('disabled', true);
+         for (let key in JSON.parse(localStorage.data)[0]) {
+            if (key === 'budgetMonth') {
+               budgetMonthValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+            if (key === 'budgetDay') {
+               budgetDayValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+            if (key === 'expensesMonth') {
+               expensesMonthValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+            if (key === 'additionalIncomeValue') {
+               additionalIncomeValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+            if (key === 'additionalExpensesValue') {
+               additionalExpensesValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+            if (key === 'incomePeriodValue') {
+               incomePeriodValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+            if (key === 'targetMonthValue') {
+               targetMonthValue.value = JSON.parse(localStorage.data)[0][key];
+            }
+         }
+      } else {
+         this.deleteLocalStorage();
+         this.deleteCookies();
+      }
+   }
+   deleteLocalStorage() {
+      if (localStorage.data) {
+         delete localStorage.data;
+      }
+   }
+   checklocalStorage() {
+      let checkKey = true;
+      let checkValue = true;
+      const cookie = document.cookie.split(';');
+      const getKeyCookie = cookie.map(item => {
+         return item.replace(/\=[\s\D\d]*/g, '').trim();
+      });
+      const getValueCookie = cookie.map(item => {
+         return item.replace(/\D*=/g, '').trim();
+      });
+      let getKeyLocalStorage = [];
+      let getValueLocalStorage = [];
+
+      for (let key in JSON.parse(localStorage.data)[0]) {
+         getKeyLocalStorage.push(key);
+         getValueLocalStorage.push(JSON.parse(localStorage.data)[0][key]);
+      }
+      getKeyLocalStorage.forEach(item => {
+         if (!getKeyCookie.includes(item)) {
+            checkKey = false;
+         }
+      });
+
+      getValueLocalStorage.forEach((itemStorage, indexStorage) => {
+         getValueCookie.forEach((item, index) => {
+            if (item !== itemStorage && index !== indexStorage) {
+               if (item === 'true') {
+                  checkValue = true;
+               } else {
+                  checkValue = false;
+               }
+            }
+         });
+      });
+      if (checkKey === false || checkValue === false) {
+         return false;
+      } else {
+         return true;
+      }
    }
 }
 
