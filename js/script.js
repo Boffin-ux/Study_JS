@@ -343,7 +343,7 @@ class AppData {
       let cookieStr = `${encodeURI(key)}=${encodeURI(value)}`;
       if (year) {
          const expires = new Date(year, month - 1, day);
-         cookieStr += `; expires=${expires.toGMTString()}`;
+         cookieStr += '; expires=' + expires.toGMTString();
       }
       cookieStr += path ? `; path=${encodeURI(path)}` : '';
       cookieStr += domain ? `; domain=${encodeURI(domain)}` : '';
@@ -352,14 +352,14 @@ class AppData {
       document.cookie = cookieStr;
    }
    addCookie() {
-      this.setCookie('budgetMonth', budgetMonthValue.value);
-      this.setCookie('budgetDay', budgetDayValue.value);
-      this.setCookie('expensesMonth', expensesMonthValue.value);
-      this.setCookie('additionalIncomeValue', additionalIncomeValue.value);
-      this.setCookie('additionalExpensesValue', additionalExpensesValue.value);
-      this.setCookie('incomePeriodValue', incomePeriodValue.value);
-      this.setCookie('targetMonthValue', targetMonthValue.value);
-      this.setCookie('isLoad', true);
+      this.setCookie('budgetMonth', budgetMonthValue.value, 2022, 12, 1);
+      this.setCookie('budgetDay', budgetDayValue.value, 2022, 12, 1);
+      this.setCookie('expensesMonth', expensesMonthValue.value, 2022, 12, 1);
+      this.setCookie('additionalIncomeValue', additionalIncomeValue.value, 2022, 12, 1);
+      this.setCookie('additionalExpensesValue', additionalExpensesValue.value, 2022, 12, 1);
+      this.setCookie('incomePeriodValue', incomePeriodValue.value, 2022, 12, 1);
+      this.setCookie('targetMonthValue', targetMonthValue.value, 2022, 12, 1);
+      this.setCookie('isLoad', true, 2022, 12, 1);
    }
    deleteCookies() {
       let cookies = document.cookie.split(';');
